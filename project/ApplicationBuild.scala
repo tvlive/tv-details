@@ -1,6 +1,7 @@
 import sbt._
 import Keys._
 import scala.util.Properties._
+import templemore.sbt.cucumber.CucumberPlugin
 
 object ApplicationBuild extends Build {
 
@@ -27,10 +28,18 @@ object ApplicationBuild extends Build {
       testOptions in Test := Seq(Tests.Filter(unitFilter)),
       testOptions in IntTest := Seq(Tests.Filter(integrationFilter)),
       testOptions in AccTest := Seq(Tests.Filter(acceptanceFilter)))
-    .settings(scalaSource in AccTest <<= baseDirectory(_ / "test/acceptance"))
     .settings(scalaSource in IntTest <<= baseDirectory(_ / "test/integration"))
     .settings(libraryDependencies ++= Seq("org.scalatestplus" % "play_2.10" % "1.0.0" % "test"))
     .settings(Keys.fork in (Test) := false)
+    .configs( AccTest )
+    .settings(inConfig(AccTest)(Defaults.testSettings) : _*)
+    .settings(scalaSource in IntTest <<= baseDirectory(_ / "test/acceptance"))
+    .settings(libraryDependencies ++= Seq("org.scalatestplus" % "play_2.10" % "1.0.0" % "test"))
+    .settings(CucumberPlugin.cucumberSettings: _*)
+    .settings(
+      CucumberPlugin.cucumberFeaturesLocation := "cucumber",
+      CucumberPlugin.cucumberStepsBasePackage := "cucumber.steps"
+    )
 
 
 }
