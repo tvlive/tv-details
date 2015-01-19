@@ -38,6 +38,7 @@ object ApplicationBuild extends Build {
     .settings(inConfig(AccTest)(Defaults.testSettings): _*)
     .settings(scalaSource in AccTest <<= baseDirectory(_ / "test/acceptance"))
     .settings(libraryDependencies ++= Seq("org.scalatestplus" % "play_2.10" % "1.0.0" % "test",
+    "com.github.tomakehurst" % "wiremock" % "1.53" % "test",
     "info.cukes" %% "cucumber-scala" % "1.1.8" % "test",
     "info.cukes" % "cucumber-junit" % "1.1.8" % "test",
     "junit" % "junit" % "4.11" % "test"))

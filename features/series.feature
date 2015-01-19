@@ -1,4 +1,4 @@
-Feature: some feature
+Feature: Series details
 
   Scenario: get something
     Given I bla
